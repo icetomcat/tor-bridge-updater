@@ -1,0 +1,16 @@
+# Runtime data (generated on the server, not tracked)
+repo/
+updater.log
+failed_bridges.log
+rotate.lock
+working_bridges.txt
+bridge_check.log
+
+# Editor / OS
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Qwen Code internal
+.qwen/
