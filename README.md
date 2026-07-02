@@ -28,7 +28,8 @@ cron (*/5 min) → health_check.sh
 
 | File | Purpose |
 |------|---------|
-| `config.sh` | **User settings** — paths, timeouts, parallelism, bridge count |
+| `config.example.sh` | **Default settings** — tracked in git, safe to overwrite on pull |
+| `config.sh` | **Your settings** — copy from example, git-ignored, never conflicts |
 | `lib.sh` | Core functions — bridge testing engine, job pool, logging |
 | `health_check.sh` | Tests Tor connectivity via `torsocks curl` with retries |
 | `fetch_bridges.sh` | Clones/pulls bridge repo, tests bridges newest-first |
@@ -43,13 +44,26 @@ cron (*/5 min) → health_check.sh
 ## Deployment
 
 ```bash
-# Copy scripts to server
-scp *.sh root@server:/usr/local/bin/
-ssh root@server chmod +x /usr/local/bin/{config,health_check,fetch_bridges,rotate_bridges}.sh
+# Clone the repository
+git clone <repo-url> /opt/tor-bridge-updater
+cd /opt/tor-bridge-updater
+
+# Review and adjust settings (optional — defaults work out of the box)
+cp config.example.sh config.sh
+$EDITOR config.sh
 
 # Install cron job (runs every 5 minutes)
-ssh root@server 'echo "*/5 * * * * root /usr/local/bin/health_check.sh || /usr/local/bin/rotate_bridges.sh" > /etc/cron.d/tor-bridges'
+echo "*/5 * * * * root /opt/tor-bridge-updater/health_check.sh || /opt/tor-bridge-updater/rotate_bridges.sh" > /etc/cron.d/tor-bridges
 ```
+
+## Updating
+
+```bash
+cd /opt/tor-bridge-updater
+git pull    # your config.sh is git-ignored — never conflicts
+```
+
+On first run, `lib.sh` automatically creates `config.sh` from `config.example.sh` if it doesn't exist.
 
 ## Manual usage
 

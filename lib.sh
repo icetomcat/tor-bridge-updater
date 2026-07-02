@@ -6,6 +6,18 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Auto-create user config from example if missing
+if [ ! -f "$SCRIPT_DIR/config.sh" ]; then
+    if [ -f "$SCRIPT_DIR/config.example.sh" ]; then
+        cp "$SCRIPT_DIR/config.example.sh" "$SCRIPT_DIR/config.sh"
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Created config.sh from config.example.sh — review and adjust settings." >&2
+    else
+        echo "ERROR: config.example.sh not found in $SCRIPT_DIR" >&2
+        exit 1
+    fi
+fi
+
 source "$SCRIPT_DIR/config.sh"
 
 # --- Derived paths (based on script location, not user-configurable) ---
