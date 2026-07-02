@@ -28,7 +28,8 @@ cron (*/5 min) → health_check.sh
 
 | File | Purpose |
 |------|---------|
-| `config.sh` | Shared settings, `check_bridge()`, `check_bridges_batch()`, logging |
+| `config.sh` | **User settings** — paths, timeouts, parallelism, bridge count |
+| `lib.sh` | Core functions — bridge testing engine, job pool, logging |
 | `health_check.sh` | Tests Tor connectivity via `torsocks curl` with retries |
 | `fetch_bridges.sh` | Clones/pulls bridge repo, tests bridges newest-first |
 | `rotate_bridges.sh` | Orchestrator: re-test existing, fetch new, update torrc, restart tor |

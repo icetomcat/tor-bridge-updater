@@ -7,7 +7,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-source "$SCRIPT_DIR/config.sh"
+source "$SCRIPT_DIR/lib.sh"
 
 # If rotate_bridges.sh is already running, don't interfere
 exec 200>"$LOCK_FILE"
