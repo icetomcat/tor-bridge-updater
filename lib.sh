@@ -118,7 +118,7 @@ check_bridges_batch() {
     input=$(cat)
 
     local total
-    total=$(echo "$input" | grep -c . || echo 0)
+    total=$(echo "$input" | grep -c . || true)
 
     if [ "$total" -eq 0 ]; then
         return 0
@@ -160,7 +160,7 @@ check_bridges_batch() {
     local result
     result=$(cat "$result_file" 2>/dev/null || true)
     local count
-    count=$(echo "$result" | grep -c . || echo 0)
+    count=$(echo "$result" | grep -c . || true)
     log "Found $count working bridge(s)"
 
     rm -f "$result_file"

@@ -67,8 +67,7 @@ get_bridges_newest_first() {
             | cut -f2-)
 
         if [ -n "$bridges" ]; then
-            local count
-            count=$(echo "$bridges" | grep -c . || echo 0)
+            count=$(echo "$bridges" | grep -c . || true)
             log "  → $count bridge(s) indexed from $src"
             all=$( (echo "$all"; echo "$bridges") | grep . || true)
         fi
@@ -88,13 +87,13 @@ if [ -z "$all_bridges" ]; then
     exit 1
 fi
 
-total=$(echo "$all_bridges" | grep -c . || echo 0)
+total=$(echo "$all_bridges" | grep -c . || true)
 log "Total bridges indexed: $total"
 
 log "Testing bridges (newest first, stop at $NEED working)..."
 result=$(echo "$all_bridges" | check_bridges_batch "$NEED" || echo "")
 
-count=$(echo "$result" | grep -c . || echo 0)
+count=$(echo "$result" | grep -c . || true)
 log "Working bridges found: $count"
 echo "$result"
 exit 0

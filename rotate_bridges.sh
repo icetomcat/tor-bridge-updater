@@ -62,7 +62,7 @@ if [ -n "$current_bridges" ]; then
     candidates=$(echo "$current_bridges" | check_bridges_batch || echo "")
 fi
 
-cand_count=$(echo "$candidates" | grep -c . || echo 0)
+cand_count=$(echo "$candidates" | grep -c . || true)
 log "Working bridges from current torrc: $cand_count"
 
 # --- Step 3: if not enough, fetch more from the repository ---
@@ -74,7 +74,7 @@ if [ "$cand_count" -lt "$MIN_BRIDGES" ]; then
     if [ -n "$new_bridges" ]; then
         # Merge and deduplicate
         candidates=$( (echo "$candidates"; echo "$new_bridges") | grep . | sort -u || true)
-        cand_count=$(echo "$candidates" | grep -c . || echo 0)
+        cand_count=$(echo "$candidates" | grep -c . || true)
         log "After fetch: $cand_count unique working bridge(s)"
     fi
 fi
