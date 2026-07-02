@@ -55,6 +55,9 @@ check_bridge() {
     chown tor:tor "$temp_dir" 2>/dev/null || true
     chmod 700 "$temp_dir"
 
+    # Close inherited lock FD so orphaned tor doesn't hold the lock
+    exec 200>&- 2>/dev/null || true
+
     # Start tor in background, capture output to log
     tor \
         --UseBridges 1 \
